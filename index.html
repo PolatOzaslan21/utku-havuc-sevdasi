@@ -4,156 +4,281 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Utku ve Havuç Sevdası</title>
+<meta name="description" content="Utku'nun havuçlarla dolu eğlenceli macerası - Scroll tabanlı interaktif çocuk hikayesi">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+:root {
+  --carrot: #F97316; --carrot-light: #FED7AA; --carrot-dark: #C2410C;
+  --mint: #86EFAC; --mint-dark: #22C55E; --sky: #BAE6FD; --sky-dark: #38BDF8;
+  --peach: #FECACA; --cream: #FFF7ED; --soil: #A8A29E; --soil-dark: #78716C;
+  --text: #292524; --text-soft: #57534E; --white: #FFFBEB;
+  --radius: 24px; --radius-sm: 16px; --border-w: 3px;
+  --shadow-inner: inset -3px -3px 8px rgba(0,0,0,0.1), inset 3px 3px 8px rgba(255,255,255,0.7);
+  --shadow-outer: 6px 6px 0 rgba(0,0,0,0.12);
+  --shadow-card: var(--shadow-inner), var(--shadow-outer);
+  --shadow-btn: inset -3px -3px 6px rgba(0,0,0,0.12), inset 3px 3px 6px rgba(255,255,255,0.5), 4px 4px 0 rgba(0,0,0,0.1);
+  --font-display: 'Fredoka', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+}
+
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; scroll-snap-type:y mandatory; overflow-x:hidden; }
-body { font-family:'Segoe UI',system-ui,sans-serif; background:#fff8e7; overflow-x:hidden; }
+body { font-family:var(--font-body); background:var(--cream); color:var(--text); overflow-x:hidden; line-height:1.6; }
 
-.scene { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  padding:2rem; position:relative; scroll-snap-align:start; overflow:hidden; }
+@media (prefers-reduced-motion:reduce) {
+  *, *::before, *::after { animation-duration:0.01ms!important; animation-iteration-count:1!important; transition-duration:0.01ms!important; }
+  html { scroll-behavior:auto; scroll-snap-type:none; }
+}
 
-.scene:nth-child(odd) { background:linear-gradient(180deg,#fff8e7 0%,#fff3cd 100%); }
-.scene:nth-child(even) { background:linear-gradient(180deg,#e8f5e9 0%,#c8e6c9 100%); }
-.scene:nth-child(4n+3) { background:linear-gradient(180deg,#fff3e0 0%,#ffe0b2 100%); }
+.progress { position:fixed; top:0; left:0; height:5px; background:linear-gradient(90deg,var(--carrot),var(--carrot-dark)); z-index:1000; border-radius:0 3px 3px 0; transition:width .1s linear; }
 
-.illustration { width:220px; height:220px; position:relative; margin-bottom:1.5rem; }
-.illustration svg { width:100%; height:100%; }
+.scene { min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:2rem 1rem; position:relative; scroll-snap-align:start; overflow:hidden; }
 
-.story-text { max-width:600px; text-align:center; z-index:1; }
-.story-text h2 { font-size:2.5rem; color:#e65100; margin-bottom:1rem; font-weight:800;
-  text-shadow:2px 2px 0 rgba(255,152,0,0.3); }
-.story-text p { font-size:1.3rem; line-height:1.8; color:#5d4037; }
+.scene-0 { background:linear-gradient(180deg,#FEF3C7 0%,#FDE68A 50%,#FED7AA 100%); }
+.scene-1 { background:linear-gradient(180deg,#DBEAFE 0%,#BAE6FD 50%,#DBEAFE 100%); }
+.scene-2 { background:linear-gradient(180deg,#DCFCE7 0%,#BBF7D0 50%,#DCFCE7 100%); }
+.scene-3 { background:linear-gradient(180deg,#FEE2E2 0%,#FECACA 50%,#FEE2E2 100%); }
+.scene-4 { background:linear-gradient(180deg,#FEF3C7 0%,#FED7AA 50%,#FDBA74 100%); }
+.scene-5 { background:linear-gradient(180deg,#FEE2E2 0%,#FED7AA 50%,#FDE68A 100%); }
+.scene-6 { background:linear-gradient(180deg,#DBEAFE 0%,#BFDBFE 50%,#DBEAFE 100%); }
+.scene-7 { background:linear-gradient(180deg,#DCFCE7 0%,#FEF3C7 50%,#FED7AA 100%); }
 
-.floating { animation:float 3s ease-in-out infinite; }
-@keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-20px); } }
+.illo { width:clamp(180px,30vw,280px); height:clamp(180px,30vw,280px); position:relative; margin-bottom:1.5rem; }
+.illo svg { width:100%; height:100%; display:block; }
 
-.bounce { animation:bounce 1s ease-in-out infinite; }
-@keyframes bounce { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-30px); } }
+.card { background:var(--white); border-radius:var(--radius); border:var(--border-w) solid var(--soil); box-shadow:var(--shadow-card); padding:clamp(1.25rem,3vw,2rem) clamp(1rem,3vw,2.5rem); max-width:580px; width:100%; text-align:center; z-index:1; position:relative; }
 
-.wiggle { animation:wiggle 0.5s ease-in-out infinite; }
-@keyframes wiggle { 0%,100% { transform:rotate(0); } 25% { transform:rotate(-10deg); } 75% { transform:rotate(10deg); } }
+.card h2 { font-family:var(--font-display); font-size:clamp(1.75rem,4vw,2.75rem); color:var(--carrot-dark); margin-bottom:.75rem; font-weight:700; line-height:1.2; }
+.card p { font-family:var(--font-body); font-size:clamp(1rem,2vw,1.3rem); color:var(--text-soft); line-height:1.7; }
 
-.spin-slow { animation:spin 8s linear infinite; }
-@keyframes spin { 100% { transform:rotate(360deg); } }
+@keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-16px); } }
+@keyframes bounce { 0%,100% { transform:translateY(0); } 25% { transform:translateY(-22px); } 75% { transform:translateY(-8px); } }
+@keyframes wiggle { 0%,100% { transform:rotate(0); } 20% { transform:rotate(-8deg); } 60% { transform:rotate(8deg); } }
+@keyframes pulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.08); } }
+@keyframes pop-in { 0% { opacity:0; transform:scale(0.5) translateY(30px); } 70% { transform:scale(1.05) translateY(-5px); } 100% { opacity:1; transform:scale(1) translateY(0); } }
 
-.pulse { animation:pulse 1.5s ease-in-out infinite; }
-@keyframes pulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.15); } }
+.anim-float { animation:float 3.5s ease-in-out infinite; }
+.anim-bounce { animation:bounce 1.2s ease-in-out infinite; }
+.anim-wiggle { animation:wiggle .6s ease-in-out infinite; }
+.anim-pulse { animation:pulse 1.8s ease-in-out infinite; }
+.anim-pop { opacity:0; }
+.anim-pop.visible { animation:pop-in .7s cubic-bezier(.34,1.56,.64,1) forwards; }
 
-.fade-in { opacity:0; transform:translateY(40px); transition:all 0.8s cubic-bezier(0.16,1,0.3,1); }
-.fade-in.visible { opacity:1; transform:translateY(0); }
+.scroll-hint { position:absolute; bottom:clamp(1rem,3vh,2rem); display:flex; flex-direction:column; align-items:center; gap:.4rem; color:var(--soil-dark); font-size:.85rem; font-family:var(--font-display); }
+.scroll-hint svg { animation:float 2s ease-in-out infinite; }
 
-.scroll-hint { position:absolute; bottom:2rem; font-size:1rem; color:#ff9800;
-  animation:float 2s ease-in-out infinite; display:flex; flex-direction:column; align-items:center; gap:0.5rem; }
-.scroll-hint span { font-size:2rem; }
+.btn { display:inline-flex; align-items:center; gap:.5rem; padding:.75rem 1.5rem; border-radius:var(--radius-sm); border:var(--border-w) solid var(--carrot-dark); background:var(--carrot); color:var(--white); font-family:var(--font-display); font-size:1.1rem; font-weight:600; cursor:pointer; box-shadow:var(--shadow-btn); transition:all .2s ease; min-height:48px; min-width:48px; }
+.btn:hover { transform:translateY(-2px); box-shadow:inset -3px -3px 6px rgba(0,0,0,0.12),inset 3px 3px 6px rgba(255,255,255,0.5),6px 6px 0 rgba(0,0,0,0.1); }
+.btn:focus-visible { outline:3px solid var(--carrot-dark); outline-offset:3px; }
 
-.particles { position:absolute; width:100%; height:100%; pointer-events:none; }
-.particle { position:absolute; opacity:0.3; font-size:1.5rem; animation:fall linear infinite; }
-@keyframes fall { 0% { transform:translateY(-100px) rotate(0deg); opacity:0; }
-  10% { opacity:0.3; } 90% { opacity:0.3; } 100% { transform:translateY(110vh) rotate(360deg); opacity:0; } }
-
-.progress-bar { position:fixed; top:0; left:0; height:4px; background:linear-gradient(90deg,#ff9800,#e65100);
-  z-index:100; transition:width 0.1s linear; border-radius:0 2px 2px 0; }
-
-.title-scene h2 { font-size:3.5rem; }
-.title-scene .subtitle { font-size:1.5rem; color:#ff9800; margin-top:0.5rem; }
-
-.final-scene { background:linear-gradient(180deg,#fff8e7,#ffcc02,#ff9800)!important; }
-.final-scene h2 { color:#fff; text-shadow:2px 2px 0 rgba(0,0,0,0.2); }
-.final-scene p { color:#4e342e; }
+@keyframes fall { 0% { transform:translateY(-80px) rotate(0deg); opacity:0; } 10% { opacity:.25; } 90% { opacity:.25; } 100% { transform:translateY(110dvh) rotate(360deg); opacity:0; } }
+.particles { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.particle { position:absolute; animation:fall linear infinite; }
 </style>
 </head>
 <body>
-<div class="progress-bar" id="progress"></div>
+<div class="progress" id="progress"></div>
 
-<section class="scene title-scene">
-  <div class="illustration floating">
-    <svg viewBox="0 0 200 200"><circle cx="100" cy="60" r="30" fill="#ffcc02"/><circle cx="88" cy="50" r="4" fill="#333"/><circle cx="112" cy="50" r="4" fill="#333"/><path d="M85 70 Q100 85 115 70" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="60" y="90" width="80" height="10" rx="5" fill="#ff5722"/><rect x="50" y="100" width="12" height="50" rx="6" fill="#ffcc02"/><rect x="138" y="100" width="12" height="50" rx="6" fill="#ffcc02"/><rect x="65" y="140" width="12" height="40" rx="6" fill="#ff5722"/><rect x="123" y="140" width="12" height="40" rx="6" fill="#ff5722"/><ellipse cx="70" cy="180" rx="15" ry="8" fill="#8d6e63"/><ellipse cx="130" cy="180" rx="15" ry="8" fill="#8d6e63"/><text x="100" y="175" text-anchor="middle" font-size="18" font-weight="bold">🥕</text></svg>
+<section class="scene scene-0">
+  <div class="illo anim-float">
+    <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><filter id="clay0"><feDropShadow dx="3" dy="4" stdDeviation="2" flood-opacity=".15"/></filter></defs>
+      <ellipse cx="140" cy="230" rx="90" ry="12" fill="#E7E5E4" filter="url(#clay0)"/>
+      <rect x="110" y="155" width="60" height="75" rx="30" fill="#F97316" filter="url(#clay0)"/>
+      <circle cx="140" cy="100" r="48" fill="#FED7AA" filter="url(#clay0)"/>
+      <circle cx="122" cy="88" r="7" fill="#292524"/><circle cx="158" cy="88" r="7" fill="#292524"/>
+      <circle cx="124" cy="86" r="3" fill="#fff"/><circle cx="160" cy="86" r="3" fill="#fff"/>
+      <path d="M129 112 Q140 122 151 112" stroke="#292524" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="140" cy="130" r="6" fill="#FCA5A5"/>
+      <rect x="88" y="52" width="24" height="22" rx="11" fill="#86EFAC" filter="url(#clay0)"/>
+      <rect x="170" y="48" width="24" height="22" rx="11" fill="#86EFAC" filter="url(#clay0)"/>
+      <rect x="98" y="38" width="7" height="20" rx="3.5" fill="#22C55E"/>
+      <rect x="180" y="34" width="7" height="20" rx="3.5" fill="#22C55E"/>
+      <path d="M98 52 L70 30 M180 48 L208 24" stroke="#22C55E" stroke-width="3" stroke-linecap="round"/>
+    </svg>
   </div>
-  <div class="story-text fade-in"><h2>Utku ve Havuç Sevdası</h2><p class="subtitle">Aşağı kaydırarak hikayeyi keşfet 🥕</p></div>
-  <div class="scroll-hint"><span>↓</span> Kaydır</div>
+  <div class="card"><h2>Utku ve Havuç Sevdası</h2><p>Aşağı kaydırarak hikayeyi keşfedin!</p></div>
+  <div class="scroll-hint"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>Kaydır</div>
 </section>
 
-<section class="scene">
-  <div class="illustration floating">
-    <svg viewBox="0 0 200 200"><circle cx="100" cy="55" r="32" fill="#ffcc02"/><circle cx="88" cy="45" r="5" fill="#333"/><circle cx="112" cy="45" r="5" fill="#333"/><ellipse cx="100" cy="65" rx="10" ry="6" fill="#333"/><circle cx="95" cy="63" rx="3" ry="2" fill="#ff8a80"/><rect x="58" y="87" width="84" height="14" rx="7" fill="#4caf50"/><rect x="48" y="101" width="14" height="55" rx="7" fill="#ffcc02"/><rect x="138" y="101" width="14" height="55" rx="7" fill="#ffcc02"/><rect x="66" y="150" width="14" height="35" rx="7" fill="#ff5722"/><rect x="120" y="150" width="14" height="35" rx="7" fill="#ff5722"/><ellipse cx="68" cy="185" rx="18" ry="9" fill="#5d4037"/><ellipse cx="132" cy="185" rx="18" ry="9" fill="#5d4037"/><text x="100" y="130" text-anchor="middle" font-size="36">🥕</text></svg>
+<section class="scene scene-1">
+  <div class="illo anim-float">
+    <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><filter id="clay1"><feDropShadow dx="3" dy="4" stdDeviation="2" flood-opacity=".15"/></filter></defs>
+      <ellipse cx="140" cy="240" rx="100" ry="14" fill="#E7E5E4" filter="url(#clay1)"/>
+      <rect x="108" y="165" width="64" height="75" rx="32" fill="#F97316" filter="url(#clay1)"/>
+      <circle cx="140" cy="105" r="52" fill="#FED7AA" filter="url(#clay1)"/>
+      <circle cx="120" cy="88" r="8" fill="#292524"/><circle cx="160" cy="88" r="8" fill="#292524"/>
+      <circle cx="122" cy="85" r="3.5" fill="#fff"/><circle cx="162" cy="85" r="3.5" fill="#fff"/>
+      <path d="M124 118 Q140 130 156 118" stroke="#292524" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+      <ellipse cx="140" cy="125" rx="14" ry="10" fill="#fff" opacity=".5"/>
+      <circle cx="140" cy="165" r="18" fill="#FCA5A5"/>
+      <g filter="url(#clay1)"><ellipse cx="60" cy="165" rx="35" ry="50" fill="#F97316"/><ellipse cx="60" cy="125" rx="10" ry="22" fill="#86EFAC"/></g>
+      <g filter="url(#clay1)"><ellipse cx="220" cy="170" rx="35" ry="50" fill="#F97316"/><ellipse cx="220" cy="130" rx="10" ry="22" fill="#86EFAC"/></g>
+    </svg>
   </div>
-  <div class="story-text fade-in"><h2>Utku'nun Büyük Sevdası</h2><p>Utku 7 yaşında, neşeli mi neşeli bir çocuktu. Ama onu diğer çocuklardan ayıran bir şey vardı: Utku havuçlara BAYILIYORDU!</p></div>
+  <div class="card anim-pop"><h2>Utku'nun Büyük Sevdası</h2><p>Utku 7 yaşında, neşeli mi neşeli bir çocuktu. Ama onu diğer çocuklardan ayıran bir şey vardı: Utku havuçlara <strong>BAYILIYORDU!</strong></p></div>
 </section>
 
-<section class="scene">
-  <div class="illustration bounce">
-    <svg viewBox="0 0 200 200"><circle cx="70" cy="50" r="28" fill="#ffcc02"/><circle cx="60" cy="42" r="4" fill="#333"/><circle cx="80" cy="42" r="4" fill="#333"/><path d="M58 58 Q70 68 82 58" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="40" y="78" width="60" height="12" rx="6" fill="#2196f3"/><rect x="34" y="90" width="10" height="40" rx="5" fill="#ffcc02"/><rect x="96" y="90" width="10" height="40" rx="5" fill="#ffcc02"/><text x="130" y="60" font-size="30">🥕🥕🥕</text><text x="140" y="100" font-size="30">🥕🥕</text><text x="120" y="140" font-size="30">🥕</text></svg>
+<section class="scene scene-2">
+  <div class="illo anim-bounce">
+    <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><filter id="clay2"><feDropShadow dx="3" dy="4" stdDeviation="2" flood-opacity=".15"/></filter></defs>
+      <ellipse cx="140" cy="240" rx="110" ry="14" fill="#E7E5E4" filter="url(#clay2)"/>
+      <rect x="90" y="140" width="100" height="50" rx="14" fill="#FED7AA" filter="url(#clay2)"/>
+      <rect x="90" y="100" width="100" height="20" rx="10" fill="#FEF3C7" filter="url(#clay2)"/>
+      <circle cx="140" cy="70" r="42" fill="#FED7AA" filter="url(#clay2)"/>
+      <circle cx="122" cy="58" r="6.5" fill="#292524"/><circle cx="158" cy="58" r="6.5" fill="#292524"/>
+      <circle cx="124" cy="55" r="3" fill="#fff"/><circle cx="160" cy="55" r="3" fill="#fff"/>
+      <path d="M125 82 Q140 92 155 82" stroke="#292524" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="140" cy="80" rx="19" ry="4" fill="#fff" opacity=".4"/>
+      <g filter="url(#clay2)"><ellipse cx="200" cy="220" rx="18" ry="30" fill="#F97316"/><ellipse cx="200" cy="195" rx="7" ry="15" fill="#86EFAC"/></g>
+      <g filter="url(#clay2)"><ellipse cx="70" cy="215" rx="18" ry="30" fill="#F97316"/><ellipse cx="70" cy="190" rx="7" ry="15" fill="#86EFAC"/></g>
+      <g filter="url(#clay2)"><ellipse cx="120" cy="225" rx="18" ry="30" fill="#F97316"/><ellipse cx="120" cy="200" rx="7" ry="15" fill="#86EFAC"/></g>
+      <rect x="80" y="175" width="26" height="22" rx="6" fill="#FDE68A" filter="url(#clay2)"/>
+    </svg>
   </div>
-  <div class="story-text fade-in"><h2>Her Gün Havuç</h2><p>Kahvaltıda havuçlu omlet, öğlen havuç çorbası, akşam havuçlu kek... Utku'nun her öğününde mutlaka havuç vardı. Annesi "Biraz da başka sebzeler yesen?" dese de Utku hep aynı cevabı veriyordu: "Ama havuçlar en lezzetlisi!"</p></div>
+  <div class="card anim-pop"><h2>Her Gün Havuç</h2><p>Kahvaltıda havuçlu omlet, öğlen havuç çorbası, akşam havuçlu kek... Annesi "Biraz da başka sebzeler yesen?" dese de Utku hep aynı cevabı veriyordu: "Ama havuçlar en lezzetlisi!"</p></div>
 </section>
 
-<section class="scene">
-  <div class="illustration pulse">
-    <svg viewBox="0 0 200 200"><circle cx="100" cy="58" r="34" fill="#ffcc02"/><circle cx="86" cy="44" r="5" fill="#333"/><circle cx="114" cy="44" r="5" fill="#333"/><ellipse cx="100" cy="65" rx="8" ry="5" fill="#e53935"/><circle cx="42" cy="45" r="12" fill="#ffcc02"/><text x="42" y="43" text-anchor="middle" font-size="14">!</text><circle cx="100" cy="45" r="12" fill="#ffcc02"/><text x="100" y="43" text-anchor="middle" font-size="14">!</text><circle cx="158" cy="45" r="12" fill="#ffcc02"/><text x="158" y="43" text-anchor="middle" font-size="14">!</text><path d="M50 85 L100 55 L150 85" fill="#fff8e0" stroke="#333" stroke-width="2"/><text x="100" y="80" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">ANNE</text><rect x="48" y="92" width="104" height="14" rx="7" fill="#e91e63"/><circle cx="48" cy="99" r="7" fill="#ffcc02"/><circle cx="152" cy="99" r="7" fill="#ffcc02"/></svg>
+<section class="scene scene-3">
+  <div class="illo anim-pulse">
+    <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><filter id="clay3"><feDropShadow dx="3" dy="4" stdDeviation="2" flood-opacity=".15"/></filter></defs>
+      <ellipse cx="140" cy="245" rx="95" ry="12" fill="#E7E5E4" filter="url(#clay3)"/>
+      <circle cx="140" cy="155" r="55" fill="#FED7AA" filter="url(#clay3)"/>
+      <circle cx="140" cy="95" r="42" fill="#FED7AA" filter="url(#clay3)"/>
+      <rect x="105" y="42" width="14" height="50" rx="7" fill="#86EFAC"/>
+      <circle cx="118" cy="78" r="5" fill="#fff" opacity=".5"/>
+      <circle cx="122" cy="80" r="4" fill="#292524"/>
+      <circle cx="158" cy="80" r="4" fill="#292524"/>
+      <path d="M126 108 Q140 116 154 108" stroke="#292524" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="140" cy="140" rx="22" ry="12" fill="#fff" opacity=".3"/>
+      <circle cx="45" cy="80" r="22" fill="#F97316" filter="url(#clay3)"/>
+      <circle cx="235" cy="80" r="22" fill="#F97316" filter="url(#clay3)"/>
+      <circle cx="140" cy="65" r="22" fill="#F97316" filter="url(#clay3)"/>
+      <path d="M55 210 L140 175 L225 210" fill="#FEE2E2" stroke="#292524" stroke-width="3" filter="url(#clay3)"/>
+      <text x="140" y="205" text-anchor="middle" font-size="14" fill="#292524" font-weight="700" font-family="Fredoka, sans-serif">ANNE</text>
+    </svg>
   </div>
-  <div class="story-text fade-in"><h2>Annesinin Uyarısı</h2><p>Bir gün annesi endişeyle "Utkucuğum, bu kadar çok havuç yersen turuncuya dönebilirsin!" dedi. Utku kahkahayla güldü: "Anne saçmalama, insan turuncu olur mu hiç?"</p></div>
+  <div class="card anim-pop"><h2>Annesinin Uyarısı</h2><p>Bir gün annesi endişeyle "Utkucuğum, bu kadar çok havuç yersen <strong>turuncuya dönebilirsin!</strong>" dedi. Utku kahkahayla güldü: "Anne saçmalama, insan turuncu olur mu hiç?"</p></div>
 </section>
 
-<section class="scene">
-  <div class="illustration">
-    <svg viewBox="0 0 200 200" class="wiggle"><text x="100" y="100" text-anchor="middle" font-size="80">🥕</text><text x="40" y="50" font-size="30">🥕</text><text x="150" y="60" font-size="25">🥕</text><text x="60" y="150" font-size="25">🥕</text><text x="140" y="140" font-size="30">🥕</text></svg>
+<section class="scene scene-4">
+  <div class="illo anim-wiggle">
+    <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><filter id="clay4"><feDropShadow dx="3" dy="4" stdDeviation="2" flood-opacity=".15"/></filter></defs>
+      <ellipse cx="140" cy="245" rx="100" ry="12" fill="#E7E5E4" filter="url(#clay4)"/>
+      <g filter="url(#clay4)"><ellipse cx="70" cy="100" rx="35" ry="55" fill="#F97316"/><ellipse cx="70" cy="55" rx="12" ry="25" fill="#86EFAC"/></g>
+      <g filter="url(#clay4)"><ellipse cx="140" cy="110" rx="38" ry="58" fill="#FDBA74"/><ellipse cx="140" cy="60" rx="13" ry="28" fill="#86EFAC"/></g>
+      <g filter="url(#clay4)"><ellipse cx="210" cy="105" rx="35" ry="55" fill="#F97316"/><ellipse cx="210" cy="60" rx="12" ry="25" fill="#86EFAC"/></g>
+      <text x="55" y="103" text-anchor="middle" font-size="28" fill="#fff" font-weight="800" font-family="Fredoka, sans-serif">5</text>
+      <text x="125" y="113" text-anchor="middle" font-size="28" fill="#fff" font-weight="800" font-family="Fredoka, sans-serif">7</text>
+      <text x="195" y="108" text-anchor="middle" font-size="28" fill="#fff" font-weight="800" font-family="Fredoka, sans-serif">10</text>
+      <g filter="url(#clay4)"><ellipse cx="100" cy="185" rx="28" ry="48" fill="#FCA5A5"/><ellipse cx="100" cy="145" rx="10" ry="20" fill="#86EFAC"/></g>
+      <g filter="url(#clay4)"><ellipse cx="180" cy="190" rx="28" ry="48" fill="#FCA5A5"/><ellipse cx="180" cy="150" rx="10" ry="20" fill="#86EFAC"/></g>
+      <text x="90" y="190" text-anchor="middle" font-size="24" fill="#fff" font-weight="800" font-family="Fredoka, sans-serif">3</text>
+      <text x="170" y="195" text-anchor="middle" font-size="24" fill="#fff" font-weight="800" font-family="Fredoka, sans-serif">4</text>
+    </svg>
   </div>
-  <div class="story-text fade-in"><h2>Uyarıyı Dinlemeyen Utku</h2><p>Utku annesinin sözünü pek de ciddiye almadı. Ertesi gün yine 5 havuç, sonraki gün 7 havuç... Hatta bir gün tam 10 tane havuç yedi! Havuç sevdası giderek büyüyordu.</p></div>
+  <div class="card anim-pop"><h2>Uyarıyı Dinlemeyen Utku</h2><p>Utku annesinin sözünü pek de ciddiye almadı. Ertesi gün yine 5 havuç, sonraki gün 7 havuç... Hatta bir gün tam <strong>10 tane havuç</strong> yedi! Havuç sevdası giderek büyüyordu.</p></div>
 </section>
 
-<section class="scene">
-  <div class="illustration pulse">
-    <svg viewBox="0 0 200 200"><rect x="40" y="20" width="120" height="80" rx="10" fill="#fff" stroke="#333" stroke-width="2"/><rect x="50" y="30" width="30" height="20" rx="3" fill="#e0e0e0"/><rect x="50" y="55" width="30" height="15" rx="3" fill="#e0e0e0"/><rect x="120" y="30" width="30" height="20" rx="3" fill="#e0e0e0"/><rect x="120" y="55" width="30" height="15" rx="3" fill="#e0e0e0"/><rect x="65" y="75" width="70" height="8" rx="4" fill="#e0e0e0"/><circle cx="100" cy="170" r="40" fill="#ff9800"/><circle cx="85" cy="155" r="6" fill="#fff"/><circle cx="115" cy="155" r="6" fill="#fff"/><circle cx="87" cy="157" r="3" fill="#333"/><circle cx="117" cy="157" r="3" fill="#333"/><ellipse cx="100" cy="175" rx="12" ry="5" fill="#e65100"/><text x="35" y="45" font-size="20">😱</text><text x="150" y="45" font-size="20">😱</text></svg>
+<section class="scene scene-5">
+  <div class="illo anim-pulse">
+    <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><filter id="clay5"><feDropShadow dx="3" dy="4" stdDeviation="2" flood-opacity=".15"/></filter></defs>
+      <ellipse cx="140" cy="245" rx="95" ry="12" fill="#E7E5E4" filter="url(#clay5)"/>
+      <rect x="60" y="45" width="160" height="130" rx="20" fill="#fff" stroke="#292524" stroke-width="3.5" filter="url(#clay5)"/>
+      <rect x="72" y="55" width="136" height="110" rx="12" fill="#BAE6FD" opacity=".5"/>
+      <circle cx="140" cy="165" r="42" fill="#FB923C" filter="url(#clay5)"/>
+      <circle cx="122" cy="152" r="7" fill="#fff"/><circle cx="158" cy="152" r="7" fill="#fff"/>
+      <circle cx="124" cy="150" r="3.5" fill="#292524"/><circle cx="160" cy="150" r="3.5" fill="#292524"/>
+      <ellipse cx="140" cy="180" rx="14" ry="6" fill="#C2410C"/>
+      <text x="78" y="65" font-size="28" fill="#F97316">!</text>
+      <text x="185" y="65" font-size="28" fill="#F97316">!</text>
+    </svg>
   </div>
-  <div class="story-text fade-in"><h2>Turuncu Sürpriz!</h2><p>Bir sabah Utku aynaya baktı ve şok oldu! Yüzü... elleri... kolları... TURUNCU olmuştu! "ANNEEEE! PORTAKALA DÖNÜŞÜYORUM!!" diye bağırdı.</p></div>
+  <div class="card anim-pop"><h2>Turuncu Sürpriz!</h2><p>Bir sabah Utku aynaya baktı ve şok oldu! Yüzü... elleri... kolları... <strong>TURUNCU</strong> olmuştu! "ANNEEEE! PORTAKALA DÖNÜŞÜYORUM!!" diye bağırdı.</p></div>
 </section>
 
-<section class="scene">
-  <div class="illustration floating">
-    <svg viewBox="0 0 200 200"><rect x="20" y="30" width="70" height="100" rx="5" fill="#fff" stroke="#333" stroke-width="2"/><circle cx="55" cy="55" r="18" fill="#ffcc02"/><ellipse cx="55" cy="60" rx="6" ry="3" fill="#e65100"/><rect x="30" y="80" width="50" height="8" rx="4" fill="#e0e0e0"/><rect x="30" y="95" width="50" height="8" rx="4" fill="#e0e0e0"/><rect x="110" y="30" width="70" height="100" rx="5" fill="#fff" stroke="#333" stroke-width="2"/><circle cx="145" cy="55" r="18" fill="#ffcc02"/><text x="145" y="55" text-anchor="middle" font-size="18">🩺</text><rect x="120" y="80" width="50" height="8" rx="4" fill="#e0e0e0"/><rect x="120" y="95" width="50" height="8" rx="4" fill="#e0e0e0"/><text x="100" y="160" text-anchor="middle" font-size="12" fill="#666">Doktor muayenesi</text><text x="100" y="20" text-anchor="middle" font-size="30">🏥</text></svg>
+<section class="scene scene-6">
+  <div class="illo anim-float">
+    <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><filter id="clay6"><feDropShadow dx="3" dy="4" stdDeviation="2" flood-opacity=".15"/></filter></defs>
+      <rect x="40" y="55" width="200" height="170" rx="22" fill="#fff" stroke="#292524" stroke-width="3.5" filter="url(#clay6)"/>
+      <circle cx="95" cy="120" r="35" fill="#FED7AA" filter="url(#clay6)"/>
+      <circle cx="95" cy="120" r="16" fill="#BAE6FD" filter="url(#clay6)"/>
+      <text x="95" y="112" text-anchor="middle" font-size="14" fill="#292524" font-family="Fredoka, sans-serif">Utku</text>
+      <rect x="63" y="155" width="65" height="12" rx="6" fill="#FED7AA" filter="url(#clay6)"/>
+      <rect x="63" y="172" width="65" height="12" rx="6" fill="#FED7AA" filter="url(#clay6)"/>
+      <circle cx="185" cy="120" r="35" fill="#F97316" filter="url(#clay6)"/>
+      <circle cx="175" cy="110" r="5" fill="#fff"/><circle cx="195" cy="110" r="5" fill="#fff"/>
+      <circle cx="173" cy="108" r="2.5" fill="#292524"/><circle cx="193" cy="108" r="2.5" fill="#292524"/>
+      <path d="M177 125 Q185 132 193 125" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <rect x="155" y="155" width="60" height="10" rx="5" fill="#FB923C" filter="url(#clay6)"/>
+      <rect x="155" y="170" width="60" height="10" rx="5" fill="#FB923C" filter="url(#clay6)"/>
+      <text x="140" y="212" text-anchor="middle" font-size="11" fill="#78716C" font-family="Nunito, sans-serif">Doktor muayenesi</text>
+    </svg>
   </div>
-  <div class="story-text fade-in"><h2>Doktor Ziyareti</h2><p>Annesi Utku'yu hemen doktora götürdü. Doktor gülümseyerek "Endişelenmeyin, buna 'karotenemi' denir. Çok fazla havuç yemekten olur, zararsızdır ama biraz ara vermek gerek!" dedi.</p></div>
+  <div class="card anim-pop"><h2>Doktor Ziyareti</h2><p>Annesi Utku'yu hemen doktora götürdü. Doktor gülümseyerek "Endişelenmeyin, buna <strong>karotenemi</strong> denir. Çok fazla havuç yemekten olur, zararsızdır. Ama biraz ara vermek gerek!" dedi.</p></div>
 </section>
 
-<section class="scene final-scene">
-  <div class="illustration floating">
-    <svg viewBox="0 0 200 200"><circle cx="100" cy="220" r="80" fill="#a5d6a7"/><rect x="40" y="120" width="18" height="100" rx="9" fill="#795548"/><circle cx="100" cy="55" r="30" fill="#ffcc02"/><circle cx="88" cy="45" r="5" fill="#333"/><circle cx="112" cy="45" r="5" fill="#333"/><path d="M82 68 Q100 80 118 68" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="58" y="85" width="84" height="12" rx="6" fill="#4caf50"/><rect x="48" y="97" width="12" height="50" rx="6" fill="#ffcc02"/><rect x="140" y="97" width="12" height="50" rx="6" fill="#ffcc02"/><text x="100" y="45" text-anchor="middle" font-size="50">😊</text></svg>
+<section class="scene scene-7">
+  <div class="illo anim-float">
+    <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+      <defs><filter id="clay7"><feDropShadow dx="3" dy="4" stdDeviation="2" flood-opacity=".15"/></filter></defs>
+      <ellipse cx="140" cy="250" rx="120" ry="18" fill="#86EFAC" filter="url(#clay7)"/>
+      <rect x="75" y="175" width="14" height="75" rx="7" fill="#A8A29E"/>
+      <rect x="191" y="180" width="14" height="70" rx="7" fill="#A8A29E"/>
+      <circle cx="140" cy="105" r="45" fill="#FED7AA" filter="url(#clay7)"/>
+      <circle cx="122" cy="93" r="7" fill="#292524"/><circle cx="158" cy="93" r="7" fill="#292524"/>
+      <circle cx="124" cy="90" r="3" fill="#fff"/><circle cx="160" cy="90" r="3" fill="#fff"/>
+      <path d="M124 118 Q140 128 156 118" stroke="#292524" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="140" cy="65" rx="18" ry="7" fill="#86EFAC" filter="url(#clay7)"/>
+      <g filter="url(#clay7)"><ellipse cx="50" cy="195" rx="18" ry="32" fill="#F97316"/><ellipse cx="50" cy="168" rx="7" ry="15" fill="#86EFAC"/></g>
+      <g filter="url(#clay7)"><ellipse cx="230" cy="200" rx="20" ry="35" fill="#22C55E"/><ellipse cx="230" cy="170" rx="8" ry="17" fill="#166534"/></g>
+      <g filter="url(#clay7)"><ellipse cx="80" cy="230" rx="16" ry="26" fill="#EF4444"/><ellipse cx="80" cy="210" rx="6" ry="12" fill="#166534"/></g>
+      <circle cx="140" cy="170" r="20" fill="#FDE047" filter="url(#clay7)"/>
+    </svg>
   </div>
-  <div class="story-text fade-in"><h2>Mutlu Son</h2><p>Utku artık her gün sadece 2 havuç yiyor, yanında brokoli, ıspanak ve domates de tüketiyordu. Ten rengi eski haline döndü ama havuç sevdası hiç bitmedi. Ne de olsa ölçülü olmak en güzeliydi! 🥕💚</p></div>
+  <div class="card anim-pop"><h2>Mutlu Son</h2><p>Utku artık her gün sadece 2 havuç yiyor, yanında brokoli, ıspanak ve domates de tüketiyordu. Ten rengi eski haline döndü ama havuç sevdası hiç bitmedi. Ne de olsa <strong>ölçülü olmak en güzeliydi!</strong></p></div>
 </section>
 
 <script>
-const fadeEls = document.querySelectorAll('.fade-in');
 const progress = document.getElementById('progress');
+const popEls = document.querySelectorAll('.anim-pop');
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold:0.3 });
+}, { threshold:0.25, rootMargin:'0px 0px -50px 0px' });
 
-fadeEls.forEach(el => observer.observe(el));
+popEls.forEach(el => observer.observe(el));
 
 window.addEventListener('scroll', () => {
-  const scrollTop = window.scrollY;
-  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-  progress.style.width = docHeight > 0 ? (scrollTop/docHeight*100)+'%' : '0%';
-});
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  progress.style.width = h > 0 ? (scrollY/h*100)+'%' : '0%';
+}, {passive:true});
 
-const scenes = document.querySelectorAll('.scene');
-scenes.forEach((scene,i) => {
-  const container = document.createElement('div');
-  container.className = 'particles';
-  const emojis = ['🥕','⭐','✨','💫','🌟','🥕','🍃'];
-  for(let j=0; j<8; j++) {
-    const p = document.createElement('span');
-    p.className = 'particle';
-    p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-    p.style.left = Math.random()*95+'%';
-    p.style.animationDuration = (6+Math.random()*10)+'s';
-    p.style.animationDelay = Math.random()*8+'s';
-    p.style.fontSize = (1+Math.random()*2)+'rem';
-    container.appendChild(p);
+document.querySelectorAll('.scene').forEach(scene => {
+  const c = document.createElement('div'); c.className='particles';
+  const items = [
+    '<svg width="18" height="30" viewBox="0 0 18 30"><ellipse cx="9" cy="14" rx="7" ry="12" fill="#F97316"/><ellipse cx="9" cy="4" rx="4" ry="7" fill="#86EFAC"/></svg>',
+    '<svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7" fill="#FDE047"/></svg>',
+    '<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" fill="#BAE6FD"/></svg>',
+    '<svg width="16" height="22" viewBox="0 0 16 22"><ellipse cx="8" cy="11" rx="6" ry="9" fill="#86EFAC"/><ellipse cx="8" cy="3" rx="3" ry="5" fill="#22C55E"/></svg>',
+  ];
+  for(let i=0;i<6;i++){
+    const p=document.createElement('span'); p.className='particle';
+    p.innerHTML=items[Math.floor(Math.random()*items.length)];
+    p.style.left=Math.random()*90+'%';
+    p.style.animationDuration=(8+Math.random()*12)+'s';
+    p.style.animationDelay=Math.random()*10+'s';
+    c.appendChild(p);
   }
-  scene.appendChild(container);
+  scene.appendChild(c);
 });
 </script>
 </body>
